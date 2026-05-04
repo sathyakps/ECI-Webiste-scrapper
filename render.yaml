@@ -1,0 +1,11 @@
+# https://render.com — New Blueprint → select repo with this file, or create Web Service manually.
+services:
+  - type: web
+    name: election-results-viewer
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
