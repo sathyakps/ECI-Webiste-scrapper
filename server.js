@@ -7,6 +7,8 @@ const {
   fetchMergedEciResults,
   fetchMergedFromPastedHtml,
 } = require("./lib/fetchAllEci");
+const { recordHomePageVisit, getVisitCount } = require("./lib/visitCounter");
+const { resolvePartySymbolsBatch } = require("./lib/googlePartySymbol");
 
 const DEFAULT_URL =
   process.env.ECI_RESULTS_URL ||
@@ -78,6 +80,51 @@ app.get("/api/health", (_req, res) => {
     uptimeSeconds: Math.floor(process.uptime()),
     timestamp: new Date().toISOString(),
   });
+});
+
+app.get("/api/stats", (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.json({
+    ok: true,
+    visitCount: getVisitCount(),
+  });
+});
+
+/** Count loads of the main HTML page (not assets, not /api/*). */
+app.use((req, res, next) => {
+  if (req.method === "GET") {
+    const p = req.path;
+    if (p === "/" || p === "/index.html") {
+      try {
+        recordHomePageVisit();
+      } catch (e) {
+        console.error("visit counter:", e && e.message);
+      }
+    }
+  }
+  next();
+});
+
+app.use(express.json({ limit: "64kb" }));
+
+app.post("/api/party-symbols", async (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  try {
+    const parties = req.body && req.body.parties;
+    if (!Array.isArray(parties)) {
+      return res.status(400).json({ ok: false, error: "parties array required" });
+    }
+    if (parties.length > 40) {
+      return res.status(400).json({ ok: false, error: "max 40 parties per request" });
+    }
+    const { map, configured } = await resolvePartySymbolsBatch(parties);
+    res.json({ ok: true, map, googleConfigured: configured });
+  } catch (e) {
+    res.status(500).json({
+      ok: false,
+      error: e.message || "party symbol lookup failed",
+    });
+  }
 });
 
 const parseRawHtml = express.raw({
@@ -197,5 +244,8 @@ app.listen(PORT, () => {
   );
   if (process.env.ECI_PROXY_URL || process.env.HTTPS_PROXY) {
     console.log("Proxy: ECI_PROXY_URL / HTTPS_PROXY is set (used by got-scraping & Chrome).");
+  }
+  if (process.env.GOOGLE_CSE_API_KEY && process.env.GOOGLE_CSE_CX) {
+    console.log("Party images: Google Custom Search JSON API enabled (POST /api/party-symbols).");
   }
 });

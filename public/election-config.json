@@ -1,0 +1,47 @@
+{
+  "_readme": "blocs.*.urls = logo image URL(s) for that bloc (first https URL is used in table + dashboard cards). Use direct image URLs or https://en.wikipedia.org/wiki/Special:FilePath/FileName.ext — normal wiki article URLs do not work as images.",
+  "eciUrls": [
+    "https://results.eci.gov.in/ResultAcGenMay2026/statewiseS228.htm"
+  ],
+  "fallbackBloc": "others",
+  "blocs": {
+    "admk": {
+      "label": "ADMK",
+      "parties": [
+        "Bharatiya Janata Party",
+        "All India Anna Dravida Munnetra Kazhagam",
+        "Pattali Makkal Katch",
+        "Amma Makkal Munnettra Kazagam"
+      ],
+      "urls": ["https://upload.wikimedia.org/wikipedia/commons/7/76/AIADMK_Flag.svg"]
+    },
+    "dmk": {
+      "label": "DMK",
+      "parties": [
+        "Dravida Munnetra Kazhagam",
+        "Indian National Congress",
+        "Indian Union Muslim League",
+        "Viduthalai Chiruthaigal Katch",
+        "Communist Party of India",
+        "Desiya Murpokku Dravida Kazhagam",
+        "Communist Party of India (Marxist)"
+      ],
+      "urls": ["https://en.wikipedia.org/wiki/Special:FilePath/Dravida_Munnetra_Kazhagam_logo.png"]
+    },
+    "tvk": {
+      "label": "TVK",
+      "parties": [
+        "Tamilaga Vettri Kazhagam"
+      ],
+      "urls": ["https://en.wikipedia.org/wiki/Special:FilePath/Tamilaga_Vettri_Kazhagam_Flag.jpeg"]
+    },
+    "others": {
+      "label": "Others",
+      "parties": [
+        "Naam Tamilar Katchi",
+        "Independent"
+      ],
+      "urls": []
+    }
+  }
+}

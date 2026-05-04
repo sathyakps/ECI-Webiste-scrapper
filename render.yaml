@@ -6,6 +6,7 @@ services:
     dockerfilePath: ./Dockerfile
     plan: free
     healthCheckPath: /api/health
+    # Optional in Render dashboard (not here): GOOGLE_CSE_API_KEY, GOOGLE_CSE_CX for party images.
     envVars:
       - key: NODE_ENV
         value: production

@@ -16,13 +16,32 @@
       aria-label="Loading results"
     >
       <div class="page-loader__inner">
-        <div class="page-loader__spinner" aria-hidden="true"></div>
+        <div class="page-loader__rings" aria-hidden="true">
+          <div class="page-loader__ring page-loader__ring--a"></div>
+          <div class="page-loader__ring page-loader__ring--b"></div>
+        </div>
         <p class="page-loader__text">Loading results…</p>
       </div>
     </div>
     <div class="wrap">
       <header class="page-header">
-        <p id="fetched-at" class="muted fetched-at"></p>
+        <div class="page-header__row">
+          <p id="fetched-at" class="muted fetched-at"></p>
+          <button
+            type="button"
+            id="refresh"
+            class="btn-refresh"
+            aria-label="Refresh results from ECI"
+          >
+            <span class="btn-refresh__ico" aria-hidden="true">↻</span>
+            <span>Refresh</span>
+          </button>
+        </div>
+        <div
+          id="refresh-progress"
+          class="refresh-progress hidden"
+          aria-hidden="true"
+        ></div>
       </header>
 
       <div id="error" class="banner-error hidden"></div>
@@ -32,6 +51,11 @@
           <h2 id="meta-state"></h2>
           <p id="meta-title" class="muted"></p>
           <p id="meta-summary" class="summary"></p>
+          <p
+            id="meta-eci-updated"
+            class="meta-eci-updated muted hidden"
+            aria-live="polite"
+          ></p>
         </div>
         <div class="stats stats-row">
           <div class="stat stat-total">
@@ -44,22 +68,13 @@
           </div>
           <div class="stat stat-parties">
             <b id="stat-parties">0</b>
-            <span>Leading parties</span>
+            <span id="stat-parties-caption">Leading parties</span>
           </div>
           <div class="stat stat-status">
             <b id="stat-status">0</b>
             <span>Status types</span>
           </div>
         </div>
-
-        <section class="margin-deck" aria-labelledby="margin-deck-title">
-          <h3 id="margin-deck-title" class="deck-title">Close contests — who leads when margins are tight?</h3>
-          <p class="deck-sub muted">
-            Counts are <strong>cumulative</strong> (e.g. under 5,000 includes all
-            tighter races). Party bars show the leading party in each slice.
-          </p>
-          <div class="margin-cards" id="margin-cards"></div>
-        </section>
 
         <section class="margin-deck party-deck" aria-labelledby="party-deck-title">
           <h3 id="party-deck-title" class="deck-title">Leading party — seat strength</h3>
@@ -69,6 +84,15 @@
             and a colour strip for quick comparison.
           </p>
           <div class="party-cards" id="party-cards"></div>
+        </section>
+
+        <section class="margin-deck" aria-labelledby="margin-deck-title">
+          <h3 id="margin-deck-title" class="deck-title">Close contests — who leads when margins are tight?</h3>
+          <p class="deck-sub muted">
+            Counts are <strong>cumulative</strong> (e.g. under 5,000 includes all
+            tighter races). Party bars show the leading party in each slice.
+          </p>
+          <div class="margin-cards" id="margin-cards"></div>
         </section>
 
         <div class="panel panel-status panel-status--wide">
@@ -97,8 +121,17 @@
         </div>
       </main>
 
-      <footer>
-        <p>
+      <footer class="site-footer">
+        <p class="footer-silly">
+          Time-pass election dashboard by <strong>Jigarthanda Sambava Club</strong> — zero
+          manifestos, maximum refresh button abuse. Mildly serious results,
+          deeply unserious side project.
+        </p>
+        <p class="footer-visits muted">
+          Total homepage loads recorded:
+          <strong id="visit-count" class="visit-count" translate="no">…</strong>
+        </p>
+        <p class="footer-official muted">
           Unofficial viewer. Official results:
           <a id="footer-link" href="#" target="_blank" rel="noreferrer"
             >ECI results</a
@@ -108,7 +141,7 @@
     </div>
     <script>
       document.getElementById("footer-link").href =
-        "https://results.eci.gov.in/ResultAcGenMay2026/statewiseS228.htm";
+        "https://results.eci.gov.in/ResultAcGenMay2026/statewiseS221.htm";
     </script>
     <script src="/app.js"></script>
   </body>
