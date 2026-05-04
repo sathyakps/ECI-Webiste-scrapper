@@ -70,6 +70,16 @@ async function assertSafeFetchUrl(raw) {
 
 const app = express();
 
+/** Lightweight liveness for uptime monitors / free-tier keep-warm polling (no ECI I/O). */
+app.get("/api/health", (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.json({
+    ok: true,
+    uptimeSeconds: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
+});
+
 const parseRawHtml = express.raw({
   type: () => true,
   limit: 15 * 1024 * 1024,

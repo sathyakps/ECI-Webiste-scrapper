@@ -14,6 +14,10 @@ This is a **long‑running Node + Express** service that calls ECI over the netw
 
 **Free tier caveats:** services often **sleep after idle** (slow first load), **RAM is limited** (512MB on Render free). If the container is killed during fetch, try `ECI_SKIP_PUPPETEER=1` first; if results are then blocked, upgrade RAM or use a proxy.
 
+### Keep-warm / health check
+
+`GET /api/health` returns JSON `{ ok, uptimeSeconds, timestamp }` and does **not** call ECI. You can poll it from a cron job or uptime service (e.g. every 5–10 minutes) so the process stays warm—**some hosts still spin down** when idle regardless, so treat this as best-effort.
+
 ## Other hosts that can run this
 
 | Host | Notes |

@@ -5,7 +5,7 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: free
-    healthCheckPath: /
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
